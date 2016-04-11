@@ -5,7 +5,7 @@ describe 'Car' do
   describe 'attributes' do
   
     it "allows reading and writing for :make" do
-      pending("just a test")
+#      pending("just a test")
       car = Car.new
       car.make = 'Test'
       expect(car.make).to eq('Test')
@@ -14,7 +14,7 @@ describe 'Car' do
     it "allows reading and writing for :year" do
       car = Car.new
       car.year = 9999
-      expect(car.year).to eq(9999)
+      expect(car.year).to eq(9999)\
     end
   
     it "allows reading and writing for :color" do
