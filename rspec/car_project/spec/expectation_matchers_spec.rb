@@ -214,4 +214,95 @@ describe 'Expectation Matchers' do
     
   end
   
+  describe 'observation matchers' do
+  
+    it 'will match when events change object attributes' do
+      array = []
+      expect {array << 1}.to change(array, :empty?).from(true).to(false)
+      
+      class WebSiteHits
+        attr_accessor :count
+        def initialize; @count = 0; end
+        def increment; @count += 1; end
+      end
+      hits = WebSiteHits.new
+      expect { hits.increment }.to change(hits, :count).from(0).to(1)
+    end
+    
+    it 'will match when events change any values' do
+      x = 10
+      expect { x += 1 }.to change{x}.from(10).to(11)
+      expect { x += 1 }.to change{x}.by(1)
+      expect { x += 1 }.to change{x}.by_at_least(1)
+      expect { x += 1 }.to change{x}.by_at_most(1)
+      
+      z = 11
+      expect { z += 1 }.to change{ z % 3 }.from(2).to(0)
+    end
+    
+    it 'will match when errors are raised' do
+      expect { raise StandardError }.to raise_error(StandardError)
+      expect { raise StandardError }.to raise_exception(StandardError)
+      
+      expect { 1 / 0 }.to raise_error(ZeroDivisionError)
+      expect { 1 / 0 }.to raise_error.with_message('divided by 0')
+      expect { 1 / 0 }.to raise_error.with_message(/divided/)
+      
+      expect { 1 / 1 }.not_to raise_error
+    end
+    
+    it 'will match when output is generated' do
+      expect { print('hello') }.to output.to_stdout
+      expect { print('hello') }.to output('hello').to_stdout
+      expect { print('hello') }.to output(/ll/).to_stdout
+      
+      expect { warn('problem') }.to output(/problem/).to_stderr
+    end
+  
+  end
+  
+  describe 'compound expectations' do
+  
+    it 'will match using: and, or, &, |' do
+      expect([1,2,3,4]).to start_with(1).and end_with(4)
+      expect([1,2,3,4]).to start_with(1).and include(2)
+      
+      expect(10 * 10).to be_odd.or be > 50
+      
+      array = ['hello', 'goodbye',].shuffle
+      expect(array.first).to eq('hello') | eq('goodbye')
+    end
+  
+  end
+    
+  describe 'composing matchers' do
+    
+    it 'will match all collection elements using a matcher' do
+      array = [1,2,3]
+      expect(array).to all(be < 5)
+    end
+    
+    it 'will match by sending matchers as arguments to matchers' do
+      string = 'hello'
+      expect { string = 'goodbye' }.to change { string }.from(match(/ll/)).to(match(/oo/))
+      
+      hash = {:a => 1, :b => 2, :c => 3}
+      expect(hash).to include(:a => be_odd, :b => be_even, :c => be < 5)
+      expect(hash).to include(:a => be > 0, :b => be_within(2).of(4))
+    end
+    
+    it 'will match using noun-phrase aliases for matchers' do
+      fruits = ['apple', 'banana', 'cherry']
+      expect(fruits).to start_with(start_with('a')) & include(match(/a.a.a/)) & end_with(end_with('y'))      
+      expect(fruits).to start_with(a_string_starting_with('a')) & 
+                                   include(a_string_matching(/a.a.a/)) & 
+                                   end_with(a_string_ending_with('y'))
+      
+      array = [1,2,3,4]
+      expect(array).to start_with(be <= 2) | end_with(be_within(1).of(5))
+      expect(array).to start_with(a_value <= 2) | end_with(a_value_within(1).of(5))
+    end
+  
+  end
+  
 end
