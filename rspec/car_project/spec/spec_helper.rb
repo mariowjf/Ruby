@@ -29,6 +29,9 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+    # Mario: disable the method should
+    # expectations.syntax = [:should, :expect]
+    expectations.syntax = :expect
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
@@ -93,4 +96,30 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+end
+
+APP_ROOT = File.expand_path('../..', __FILE__)
+# puts APP_ROOT
+
+def no_output(&block)
+  original_stdout = $stdout.dup
+  $stdout.reopen('/dev/null')
+  $stdout.sync = true
+  begin
+    yield
+  ensure
+    $stdout.reopen(original_stdout)
+  end
+end
+
+def capture_output(&block)
+  original_stdout = $stdout.dup
+  output_catcher = StringIO.new
+  $stdout = output_catcher
+  begin
+    yield
+  ensure
+    $stdout = original_stdout
+  end
+  output_catcher.string
 end
