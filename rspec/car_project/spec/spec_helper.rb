@@ -32,6 +32,14 @@ RSpec.configure do |config|
     # Mario: disable the method should
     # expectations.syntax = [:should, :expect]
     expectations.syntax = :expect
+ 
+#    config.before(:suite) do
+#      puts "before suite"
+#    end
+#    
+#    config.after(:suite) do
+#      puts "after suite"
+#    end
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
