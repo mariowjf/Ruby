@@ -238,18 +238,18 @@ describe 'Doubles' do
       expect(customer).to have_received(:send_invoice)
     end
     
-    it "can expect only allowed messages on partial doubles" do
-      class Customer
-        def send_invoice
-          true
-        end
-      end
-      
-      customer = Customer.new
-      allow(customer).to receive(:send_invoice)
-      customer.send_invoice
-      expect(customer).to have_received(:send_invoice)
+it "can expect only allowed messages on partial doubles" do
+  class Customer
+    def send_invoice
+      true
     end
+  end
+  
+  customer = Customer.new
+  allow(customer).to receive(:send_invoice)
+  customer.send_invoice
+  expect(customer).to have_received(:send_invoice)
+end
     
     context 'using let and a before hook' do
     
