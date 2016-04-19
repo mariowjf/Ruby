@@ -19,7 +19,7 @@ module NumberHelper
       precise_decimal = ''
     else
       decimal ||= "0"
-      decimal = decimal[0, precision - 1]
+      decimal = decimal[0, precision]
       precise_decimal = decimal.ljust(precision, "0")
     end
     
