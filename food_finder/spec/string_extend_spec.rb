@@ -37,7 +37,7 @@ describe 'String' do
     end
     
     it 'returns true if string contains only spaces and tabs' do
-      expect("\t \t".blank?).to be(true)
+      expect("\t \t".blank?).to be true
     end
     
     it 'returns false if string contains a letter' do
@@ -45,7 +45,7 @@ describe 'String' do
     end
     
     it 'returns false if string contains a number' do
-      expect("123".blank?).to be_falsey
+      expect("123".blank?).to be false
     end
     
   end
