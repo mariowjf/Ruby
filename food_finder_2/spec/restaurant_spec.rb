@@ -43,7 +43,7 @@ describe Restaurant do
     
     it 'returns an empty array when @@file is nil' do
       # pending
-      # no_output { Restaurant.load_file(nil) }
+#       no_output { Restaurant.load_file(nil) }
       Restaurant.load_file(nil)
       restaurants = Restaurant.all
       expect(restaurants).to eq([])
